@@ -13,7 +13,9 @@ const EARTH_RADIUS = 6371;   // in kilometers
 
 // Δ λ σ Φ
 function calculateDistance(lat1, long1, lat2, long2) {
-    const { sin, cos, acos } = Math;
+    validateInput(lat1, long1, lat2, long2);
+
+    const { sin, cos, acos, abs } = Math;
     // λ1
     const la1 = utils.convertDegreesToRadians({ degrees: long1 });
     // Φ1
@@ -23,11 +25,24 @@ function calculateDistance(lat1, long1, lat2, long2) {
     // Φ2
     const fi2 = utils.convertDegreesToRadians({ degrees: lat2 });
     // Δλ - absolute difference λ1 - λ2
-    const dla = utils.absoluteDifference(la1 - la2);
+    const dla = abs(la1 - la2);
     // Δσ = acos(sinΦ1 * sinΦ2 + cosΦ1 * cosΦ2 * cosΔλ)
-    const dsigma = acos(sin(fi1) * sin(fi2) + cos(fi1) * cos(fi2) * cos(dla)));
+    const dsigma = acos(sin(fi1) * sin(fi2) + cos(fi1) * cos(fi2) * cos(dla));
 
     return utils.calculateDistanceFromCentralAngle(EARTH_RADIUS, dsigma);
 }
 
-module.exports = calculateDistance;
+function validateInput(lat1, long1, lat2, long2){
+    if(!lat1 || !long2 || !lat2 || !long2){
+        throw 'Calculate distance validation error - latitude and longitude must be numbers'
+    }
+
+    if(isNaN(lat1) || isNaN(long1) || isNaN(lat2) || isNaN(long2)){
+        throw 'Calculate distance validation error - input must be numbers'
+    }
+}
+
+
+getCalcDistanceFn = () => calculateDistance;
+
+module.exports = getCalcDistanceFn;

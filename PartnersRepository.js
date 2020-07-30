@@ -1,15 +1,15 @@
 const fs = require('fs');
 const readline = require('readline');
-
+const filename = 'partners.txt';
 class PartnerRepository {
     async getAll() {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             try{
-                const partners = await _processLineByLine('partners.txt');
+                const partners = await _processLineByLine(filename);
                 resolve(partners);
             }catch(error){
                 console.error(error);
-                reject('There was a problem with reading the database.');
+                reject(`There was a problem with reading the database. Please check ${filename} contents`);
             }
         })
     }
@@ -30,3 +30,5 @@ async function _processLineByLine(pathToFile) {
 
     return results;
 }
+
+module.exports = PartnerRepository

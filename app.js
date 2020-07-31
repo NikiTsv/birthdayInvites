@@ -12,7 +12,9 @@ async function start(){
         console.error(new Date(), err)
     }
 }
+// debug purposes
+// setTimeout(() => {
+//     start()
+// }, 5*1000);
 
-setTimeout(() => {
-    start()
-}, 5*1000);
+start();

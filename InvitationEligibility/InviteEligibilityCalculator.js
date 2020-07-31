@@ -1,4 +1,4 @@
-const { officeLocation, invitationMinDistanceKm }  = require('./config');
+const { officeLocation, invitationMinDistanceKm }  = require('../config');
 class InviteEligibilityCalculatorByGreatDistance {
     constructor(dependencies){
         this.calculateDistance = dependencies.calculateDistance;

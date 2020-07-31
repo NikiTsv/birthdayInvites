@@ -29,19 +29,44 @@ function calculateDistance(lat1, long1, lat2, long2) {
     // Δσ = acos(sinΦ1 * sinΦ2 + cosΦ1 * cosΦ2 * cosΔλ)
     const dsigma = acos(sin(fi1) * sin(fi2) + cos(fi1) * cos(fi2) * cos(dla));
 
-    return utils.calculateDistanceFromCentralAngle(EARTH_RADIUS, dsigma);
+    const distance = utils.calculateDistanceFromCentralAngle(EARTH_RADIUS, dsigma);
+    return distance;
 }
 
 function validateInput(lat1, long1, lat2, long2){
-    if(!lat1 || !long2 || !lat2 || !long2){
-        throw 'Calculate distance validation error - latitude and longitude must be numbers'
-    }
 
-    if(isNaN(lat1) || isNaN(long1) || isNaN(lat2) || isNaN(long2)){
-        throw 'Calculate distance validation error - input must be numbers'
+    validateForNullInput(lat1, long1, lat2, long2);
+    validateInputIsOfTypeNumber(lat1, long1, lat2, long2);
+    validateLat(lat1);
+    validateLat(lat2);
+    validateLong(long1);
+    validateLong(long2);
+
+}
+
+function validateForNullInput(lat1, long1, lat2, long2){
+    if(!lat1 == null || !long2 == null || !lat2 == null || !long2 == null){
+        throw new Error('Calculate distance validation error - latitude and longitude must be numbers');
     }
 }
 
+function validateInputIsOfTypeNumber(lat1, long1, lat2, long2){
+    if(isNaN(lat1) || isNaN(long1) || isNaN(lat2) || isNaN(long2)){
+        throw new Error('Calculate distance validation error - input must be numbers');
+    }
+}
+
+function validateLat(lat){
+    if(lat < -90 || lat > 90){
+        throw new Error(`Calculate distance - invalid latitude ${lat}`);
+    }
+}
+
+function validateLong(long){
+    if(long < -180 || long > 180){
+        throw new Error(`Calculate distance - invalid longitude ${long}`);
+    }
+}
 
 getCalcDistanceFn = () => calculateDistance;
 
